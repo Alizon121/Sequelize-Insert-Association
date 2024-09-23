@@ -33,7 +33,17 @@ app.post('/bands/:bandId/musicians', async (req, res, next) => {
 
 // STEP 2: Connecting two existing records (Many-to-Many)
 app.post('/musicians/:musicianId/instruments', async (req, res, next) => {
-    // Your code here 
+    // Your code here
+    const musicianId = req.params.musicianId;
+    const musician = await Musician.findOne({where: {id: musicianId}})
+    const {id} = req.body //id corresponds to an instrument id
+
+    const addInstrumentToMusician = await musician.addInstrumentToMusician([...id])
+
+    res.json({
+        message: `The ${musician} was successfully associated with the given ${id}.`,
+        instrumentIds: addInstrumentToMusician
+    })
 })
 
 
