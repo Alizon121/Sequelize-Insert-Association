@@ -36,13 +36,12 @@ app.post('/musicians/:musicianId/instruments', async (req, res, next) => {
     // Your code here
     const musicianId = req.params.musicianId;
     const musician = await Musician.findOne({where: {id: musicianId}})
-    const {id} = req.body //id corresponds to an instrument id
-
-    const addInstrumentToMusician = await musician.addInstrumentToMusician([...id])
-
+    // const {id} = req.body //id corresponds to an instrument id
+    const {instrumentIds} = req.body
+    const addInstrument = await musician.addInstrument(instrumentIds)
     res.json({
-        message: `The ${musician} was successfully associated with the given ${id}.`,
-        instrumentIds: addInstrumentToMusician
+        message: `Associated ${musician.firstName} with instruments ${instrumentIds}.`,
+        instrumentIds: addInstrument
     })
 })
 
